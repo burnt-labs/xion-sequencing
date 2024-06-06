@@ -1,2 +1,2 @@
 # xion-sequencing
-Industrial-grade nonce mismatch repellent
+Nonce mismatches will ruin your day
