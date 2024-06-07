@@ -1,3 +1,7 @@
+# ========================= localdev
+
+#.localstack/
+
 # ========================= Python
 
 # Byte-compiled / optimized / DLL files

@@ -1,4 +1,4 @@
-module github.com/burnt-labs/xion-sequencing/redis
+module github.com/burnt-labs/xion-sequencing/golang/redis
 
 go 1.22.3
 

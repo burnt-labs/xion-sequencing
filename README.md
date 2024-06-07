@@ -2,7 +2,7 @@
 
 In their natural environment, swarms of Nonce mismatches are known to ruin your day.
 
-This repository proposes a few Scuffed strategies, the better get on with the rest of it. NB; keyword: Scuffed.
+This repository proposes a few Scuffed strategies, which help us get on with the rest of it. NB; keyword: Scuffed.
 Secure, scalable and sequential implementation of the examples herein are left as an exercise to you, dear reader.
 
 Wise man once said: "There's more than one way to do it"
@@ -28,9 +28,10 @@ $ brew install node yarn pnpm
 
 ```bash
 $ docker compose up redis
+$ docker compose up aws
 ```
 
-- All examples are runnable from Makefile targets.
+- All examples are runnable from Makefile targets at the repo root.
 
 ```bash
 $ make golang-memory
