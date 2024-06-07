@@ -34,12 +34,16 @@ $ docker compose up aws
 - All examples are runnable from Makefile targets at the repo root.
 
 ```bash
+$ make golang-aws-sqs
 $ make golang-memory
 $ make golang-redis
+$ make python-aws-sqs
 $ make python-memory
 $ make python-redis
+$ make rust-aws-sqs
 $ make rust-memory
 $ make rust-redis
+$ make typescript-aws-sqs
 $ make typescript-memory
 $ make typescript-redis
 ```
