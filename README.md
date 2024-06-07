@@ -1,9 +1,9 @@
 # xion-sequencing
 
-In their natural environment, swarms of Nonce mismatches are known to ruin your day.
+When encountered in the wild, swarms of Nonce mismatches are known to ruin your day.
 
 This repository proposes a few Scuffed strategies, which help us get on with the rest of it. NB; keyword: Scuffed.
-Secure, scalable and sequential implementation of the examples herein are left as an exercise to you, dear reader.
+Secure, scalable and sequential implementation of these examples are left as an exercise to you, dear reader.
 
 Wise man once said: "There's more than one way to do it"
 
