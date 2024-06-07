@@ -1,21 +1,21 @@
-import { SQSClient, SendMessageCommand, ReceiveMessageCommand, DeleteMessageCommand } from "@aws-sdk/client-sqs";
-
-const sqsClient = new SQSClient({
-    region: "us-east-1",
-    endpoint: "http://localhost:4566",
-});
+import 'dotenv/config';
+import {SendMessageCommand} from "@aws-sdk/client-sqs";
+import {awsConfig, xionConfig} from "./config";
+import {xionTxBankSend} from "./cosmos";
+import {sqsBankSend, SQSBankSendMessage, sqsClient, sqsDelete, sqsReceive} from "./aws";
 
 async function producer(queueUrl: string) {
+    const sqsBankSendMessage: SQSBankSendMessage = {
+        recipient: xionConfig.recipient,
+        amount: xionConfig.amount,
+    };
+
     for (let i = 0; i < 10; i++) {
-        const item = `item ${i}`;
-        const command = new SendMessageCommand({
-            QueueUrl: queueUrl,
-            MessageBody: item
-        });
-        await sqsClient.send(command);
-        console.log(`Produced: ${item}`);
+        await sqsBankSend(sqsBankSendMessage);
+        console.log(`Produced: ${JSON.stringify(sqsBankSendMessage)}`);
         await sleep(1000);
     }
+
     const command = new SendMessageCommand({
         QueueUrl: queueUrl,
         MessageBody: "DONE"
@@ -25,23 +25,32 @@ async function producer(queueUrl: string) {
 
 async function consumer(queueUrl: string) {
     while (true) {
-        const command = new ReceiveMessageCommand({
-            QueueUrl: queueUrl,
-            MaxNumberOfMessages: 1,
-            WaitTimeSeconds: 10
-        });
-        const response = await sqsClient.send(command);
-        const messages = response.Messages || [];
+        const messages = await sqsReceive();
         for (const message of messages) {
+
+            if (message.Body === undefined) {
+                console.error("Message body is undefined");
+                continue;
+            }
+            if (message.ReceiptHandle === undefined) {
+                console.error("Receipt handle is undefined");
+                continue;
+            }
+
             console.log(`Consumed: ${message.Body}`);
-            const deleteCommand = new DeleteMessageCommand({
-                QueueUrl: queueUrl,
-                ReceiptHandle: message.ReceiptHandle!
-            });
-            await sqsClient.send(deleteCommand);
+            const msg = JSON.parse(message.Body);
+
+            await xionTxBankSend(
+                msg.recipient,
+                msg.amount.toString(),
+                xionConfig.mnemonic,
+            );
+
+            await sqsDelete(message.ReceiptHandle);
             if (message.Body === "DONE") {
                 return;
             }
+
             await sleep(2000);
         }
     }
@@ -52,9 +61,10 @@ function sleep(ms: number) {
 }
 
 async function main() {
-    const queueUrl = "http://localhost:4566/000000000000/queue";
-    await producer(queueUrl);
-    await consumer(queueUrl);
+    const producerPromise = producer(awsConfig.sqs.queueUrl);
+    const consumerPromise = consumer(awsConfig.sqs.queueUrl);
+
+    await Promise.allSettled([producerPromise, consumerPromise]);
 }
 
 main().catch(console.error);
