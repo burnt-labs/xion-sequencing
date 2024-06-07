@@ -62,4 +62,7 @@ async function main() {
     await Promise.allSettled([producerPromise, consumerPromise]);
 }
 
-main().catch(console.error);
+main().catch(err => {
+    console.error(err);
+    process.exit(1);
+});
