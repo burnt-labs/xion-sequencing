@@ -25,6 +25,8 @@ rust-redis:
 #
 # Typescript
 #
+typescript-aws-sqs:
+	cd typescript/aws-sqs && yarn start
 typescript-memory:
 	cd typescript/memory && yarn start
 typescript-redis:
