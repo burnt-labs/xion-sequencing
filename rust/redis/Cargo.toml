@@ -1,0 +1,8 @@
+[package]
+name = "redis-rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+async-std = "1.10.0"
+redis = { version = "0.24.0", features = ["async-std-comp"] }
