@@ -9,6 +9,10 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
+    "@cosmjs/crypto": "^0.32.3",
+    "@cosmjs/proto-signing": "^0.32.3",
+    "@cosmjs/stargate": "^0.32.3",
+    "dotenv": "^16.4.5",
     "queue-typescript": "^1.0.1"
   },
   "devDependencies": {

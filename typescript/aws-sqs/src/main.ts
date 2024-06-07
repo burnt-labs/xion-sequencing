@@ -20,6 +20,7 @@ async function producer(queueUrl: string) {
         QueueUrl: queueUrl,
         MessageBody: "DONE"
     });
+
     await sqsClient.send(command);
 }
 
@@ -63,7 +64,6 @@ function sleep(ms: number) {
 async function main() {
     const producerPromise = producer(awsConfig.sqs.queueUrl);
     const consumerPromise = consumer(awsConfig.sqs.queueUrl);
-
     await Promise.allSettled([producerPromise, consumerPromise]);
 }
 
