@@ -3,7 +3,10 @@ import asyncio
 
 async def producer(q):
     for i in range(10):
+
+        # Construct message with transaction parameters here
         item = f"item {i}"
+
         await q.put(item)
         print(f"Produced {item}")
         await asyncio.sleep(1)
@@ -16,6 +19,9 @@ async def consumer(q):
         if item is None:
             break
         print(f"Consumed {item}")
+
+        # Call the chain here
+
         await asyncio.sleep(2)
         q.task_done()
 

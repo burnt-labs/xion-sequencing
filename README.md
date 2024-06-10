@@ -11,9 +11,8 @@ Wise man once said: "There's more than one way to do it"
 
 ## Getting started
 
-- In this repo, you'll find Golang, Python, Rust and Typescript examples. You'll need one (or more) of these languages installed.
-
-- Here are a few one-liners to help get you started; jump to the next section when you're satisfied with your local env.
+- In this repo, you'll find Golang, Python, Rust and Typescript examples of how to enqeue messages for asynchronous processing.
+- Here are a few one-liners to help get you set up; jump to the next section when you're satisfied with your local env.
 ```bash
 $ brew install --cask docker
 $ brew install go 
@@ -21,6 +20,13 @@ $ brew install python
 $ brew install rustup-init && rustup-init && rustup toolchain install stable
 $ brew install node yarn pnpm
 ```
+
+## Work in progress
+
+- These examples provide basic async processing of messages in each language.
+- We plan on providing examples for more brokers in ach language.
+- The Typescript codebase provides a full Cosmos / Xion example with on-chain interaction.
+- We will be adding on-chain interaction for the other languages over time.
 
 ## Running the examples
 

@@ -16,7 +16,10 @@ const queueUrl = "http://localhost:4566/000000000000/queue"
 
 func producer(client *sqs.Client, queueUrl string) {
 	for i := 0; i < 10; i++ {
+
+		// Construct message with transaction parameters here
 		item := fmt.Sprintf("item %d", i)
+
 		_, err := client.SendMessage(context.TODO(), &sqs.SendMessageInput{
 			QueueUrl:    aws.String(queueUrl),
 			MessageBody: aws.String(item),
@@ -26,8 +29,11 @@ func producer(client *sqs.Client, queueUrl string) {
 		} else {
 			fmt.Println("Produced", item)
 		}
+
 		time.Sleep(1 * time.Second)
 	}
+
+	// Send a message to stop the consumer
 	_, err := client.SendMessage(context.TODO(), &sqs.SendMessageInput{
 		QueueUrl:    aws.String(queueUrl),
 		MessageBody: aws.String("DONE"),
@@ -51,7 +57,11 @@ func consumer(client *sqs.Client, queueUrl string) {
 		}
 
 		for _, message := range output.Messages {
+
 			fmt.Println("Consumed", *message.Body)
+
+			// Call the chain here
+
 			_, err := client.DeleteMessage(context.TODO(), &sqs.DeleteMessageInput{
 				QueueUrl:      aws.String(queueUrl),
 				ReceiptHandle: message.ReceiptHandle,

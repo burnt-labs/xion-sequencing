@@ -13,22 +13,28 @@ struct Message {
 
 async fn producer(client: Arc<Client>, queue_url: Arc<String>) -> Result<(), Box<dyn StdError + Send + Sync>> {
     for i in 0..10 {
+
+        // Construct message with transaction parameters here
         let msg = Message { body: format!("item {}", i) };
+
         client.send_message()
             .queue_url(&**queue_url)
             .message_body(serde_json::to_string(&msg)?)
             .send()
             .await?;
+
         println!("Produced: {}", msg.body);
         sleep(Duration::from_secs(1)).await;
     }
 
+    // Send a message to stop the consumer
     let msg = Message { body: "DONE".to_string() };
     client.send_message()
         .queue_url(&**queue_url)
         .message_body(serde_json::to_string(&msg)?)
         .send()
         .await?;
+
     Ok(())
 }
 
@@ -46,6 +52,9 @@ async fn consumer(client: Arc<Client>, queue_url: Arc<String>) -> Result<(), Box
                 if let Some(body) = &message.body {
                     let msg: Message = serde_json::from_str(body)?;
                     println!("Consumed: {}", msg.body);
+
+                    // Call the chain here
+
                     client.delete_message()
                         .queue_url(&**queue_url)
                         .receipt_handle(message.receipt_handle.unwrap())
@@ -55,6 +64,7 @@ async fn consumer(client: Arc<Client>, queue_url: Arc<String>) -> Result<(), Box
                     if msg.body == "DONE" {
                         return Ok(());
                     }
+
                     sleep(Duration::from_secs(2)).await;
                 }
             }

@@ -5,7 +5,10 @@ import redis.asyncio as redis
 
 async def producer(rdb):
     for i in range(10):
+
+        # Construct message with transaction parameters here
         item = f"item {i}"
+
         await rdb.rpush('queue', item)
         print(f"Produced {item}")
         await asyncio.sleep(1)
@@ -16,6 +19,9 @@ async def consumer(rdb):
         item = await rdb.lpop('queue')
         if item:
             print(f"Consumed {item.decode('utf-8')}")
+
+            # Call the chain here
+
             await asyncio.sleep(2)
         else:
             break

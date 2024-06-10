@@ -6,7 +6,10 @@ from botocore.config import Config
 
 async def producer(sqs, queue_url):
     for i in range(10):
+
+        # Construct message with transaction parameters here
         item = f"item {i}"
+
         await sqs.send_message(QueueUrl=queue_url, MessageBody=item)
         print(f"Produced {item}")
         await asyncio.sleep(1)
@@ -19,6 +22,9 @@ async def consumer(sqs, queue_url):
         messages = response.get('Messages', [])
         for message in messages:
             print(f"Consumed {message['Body']}")
+
+            # Call the chain here
+
             await sqs.delete_message(QueueUrl=queue_url, ReceiptHandle=message['ReceiptHandle'])
             if message['Body'] == "DONE":
                 return

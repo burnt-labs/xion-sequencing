@@ -4,10 +4,14 @@ use std::time::Duration;
 
 fn producer(tx: mpsc::Sender<String>, queue: Arc<Mutex<Vec<String>>>) {
     for i in 0..10 {
+
+        // Construct message with transaction parameters here
         let item = format!("item {}", i);
+
         tx.send(item.clone()).unwrap();
         queue.lock().unwrap().push(item.clone());
         println!("Produced {}", item);
+
         thread::sleep(Duration::from_secs(1));
     }
 }
@@ -15,6 +19,9 @@ fn producer(tx: mpsc::Sender<String>, queue: Arc<Mutex<Vec<String>>>) {
 fn consumer(rx: mpsc::Receiver<String>, queue: Arc<Mutex<Vec<String>>>) {
     while let Ok(item) = rx.recv() {
         println!("Consumed {}", item);
+
+        // Call the chain here
+
         thread::sleep(Duration::from_secs(2));
         let mut q = queue.lock().unwrap();
         if let Some(pos) = q.iter().position(|x| *x == item) {

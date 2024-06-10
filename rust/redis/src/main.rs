@@ -5,9 +5,13 @@ use std::time::Duration;
 async fn producer(client: redis::Client) {
     let mut con = client.get_async_connection().await.unwrap();
     for i in 0..10 {
+
+        // Construct message with transaction parameters here
         let item = format!("item {}", i);
+
         let _: () = con.rpush("queue", &item).await.unwrap();
         println!("Produced {}", item);
+
         task::sleep(Duration::from_secs(1)).await;
     }
 }
@@ -19,6 +23,9 @@ async fn consumer(client: redis::Client) {
         match item {
             Some(value) => {
                 println!("Consumed {}", value);
+
+                // Call the chain here
+
                 task::sleep(Duration::from_secs(2)).await;
             }
             None => {
