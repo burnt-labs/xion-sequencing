@@ -1,39 +1,47 @@
 #
 # Golang
 #
-golang-aws-sqs:
+go-aws-sqs:
+	docker compose up -d aws
 	cd golang/aws-sqs && go run main.go
-golang-memory:
+go-memory:
 	cd golang/memory && go run main.go
-golang-redis:
+go-redis:
+	docker compose up -d redis
 	cd golang/redis && go run main.go
 
 #
 # Python
 #
-python-aws-sqs:
+py-aws-sqs:
+	docker compose up -d aws
 	cd python/aws-sqs && python3 main.py
-python-memory:
+py-memory:
 	cd python/memory && python3 main.py
-python-redis:
+py-redis:
+	docker compose up -d redis
 	cd python/redis && python3 main.py
 
 #
 # Rust
 #
-rust-aws-sqs:
+rs-aws-sqs:
+	docker compose up -d aws
 	cd rust/aws-sqs && cargo run
-rust-memory:
+rs-memory:
 	cd rust/memory && cargo run
-rust-redis:
+rs-redis:
+	docker compose up -d redis
 	cd rust/redis && cargo run
 
 #
 # Typescript
 #
-typescript-aws-sqs:
+ts-aws-sqs:
+	docker compose up -d aws
 	cd typescript/aws-sqs && yarn start
-typescript-memory:
+ts-memory:
 	cd typescript/memory && yarn start
-typescript-redis:
+ts-redis:
+	docker compose up -d redis
 	cd typescript/memory && yarn start
